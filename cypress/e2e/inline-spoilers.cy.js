@@ -5,7 +5,7 @@ describe('Inline Spoilers', () => {
 
   it('can be activated', () => {
     cy.get('li[id=menu-plugins]').click()
-    cy.get('a[id=activate-inline-spoilers]').click()
+    cy.get('a[href*="action=activate&plugin=inline-spoilers"]').click()
   })
 
   it('guttenberg block is initialized', () => {
