@@ -4,7 +4,7 @@ on:
     inputs:
       is_ref:
         description: 'Inline Spoilers - GitHub Branch'
-        default: 'main'
+        default: 'master'
         type: string
 
 jobs:
