@@ -1,4 +1,9 @@
-name: WordPress EUAT
+name: WordPress UAT
+
+concurrency:
+  group: uat
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
     inputs:
@@ -9,7 +14,7 @@ on:
 
 jobs:
   tests:
-    name: EAUT
+    name: UAT
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
