@@ -40,10 +40,10 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: screenshots
+          name: ${{ matrix.php }}-screenshots
           path: cypress/screenshots
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: videos
+          name: ${{ matrix.php }}-videos
           path: cypress/videos
