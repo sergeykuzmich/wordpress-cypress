@@ -4,6 +4,7 @@ on:
 
 jobs:
   tests:
+    name: EUT
     runs-on: ubuntu-latest
     strategy:
       matrix:
