@@ -18,6 +18,11 @@ jobs:
           cache-dependency-path: 'yarn.lock'
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
+
+      - uses: actions/checkout@v3
+        with:
+          repository: sergeykuzmich/inline-spoilers
+          path: './inline-spoilers'
       
       - uses: actions/checkout@v3
         with:
