@@ -1,0 +1,31 @@
+name: WordPress 5.0
+on:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        php: ['5.6', '7.0']
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.3.0'
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      
+      - uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.WP_DEVELOPMENT_ENV_KEY }}
+          repository: sergeykuzmich/wp-development-environment
+          path: './dc'
+      - name: Boot Application
+        env:
+          WP_CORE: '5.0'
+          PHP: ${{ matrix.php }}
+        run: |
+          cd dc
+          docker compose up --detach
