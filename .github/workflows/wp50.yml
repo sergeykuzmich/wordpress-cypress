@@ -38,10 +38,12 @@ jobs:
         run: yarn cypress run
 
       - uses: actions/upload-artifact@v3
+        if: always()
         with:
           name: screenshots
           path: cypress/screenshots
       - uses: actions/upload-artifact@v3
+        if: always()
         with:
           name: videos
           path: cypress/videos
