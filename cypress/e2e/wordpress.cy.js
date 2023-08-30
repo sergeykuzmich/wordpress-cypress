@@ -6,7 +6,7 @@ describe('WordPress', () => {
 
   it('has the proper version', () => {
     cy.visit('/')
-    cy.contains('WordPress 6.3')
+    cy.contains(`WordPress ${Cypress.env('WP_CORE')}`)
   })
 
   it('credentials are valid', () => {

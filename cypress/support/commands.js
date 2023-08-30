@@ -33,3 +33,11 @@ Cypress.Commands.add('login', () => {
   cy.get('input[name=wp-submit]').click()
   cy.contains('Howdy, wordpress')
 })
+
+Cypress.Commands.add('logout', () => {
+  cy.visit('/wp-admin')
+  cy.contains('Howdy, wordpress')
+  cy.get('[class="menupop with-avatar"] [class="ab-sub-wrapper"]').invoke('show')
+  cy.get('[id=wp-admin-bar-logout] a').click()
+  cy.get('[name=loginform]').should('exist')
+})
