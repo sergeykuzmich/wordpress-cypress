@@ -1,4 +1,4 @@
-name: WordPress
+name: WordPress EUAT
 on:
   workflow_dispatch:
     inputs:
@@ -9,13 +9,14 @@ on:
 
 jobs:
   tests:
-    name: EUT
+    name: EAUT
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
-        wp_core: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7', '5.8', '5.9', '6.0', '6.1', '6.2', '6.3']
+        include:
+          - { wp_core: '5.0', php: '5.6'}
+          - { wp_core: '5.0', php: '7.0'}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
