@@ -36,3 +36,12 @@ jobs:
         env:
           CYPRESS_WP_CORE: '6.3'
         run: yarn cypress run
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: cypress/screenshots
+      - uses: actions/upload-artifact@v3
+        with:
+          name: videos
+          path: cypress/videos
