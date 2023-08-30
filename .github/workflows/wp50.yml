@@ -24,10 +24,15 @@ jobs:
           ssh-key: ${{ secrets.WP_DEVELOPMENT_ENV_KEY }}
           repository: sergeykuzmich/wp-development-environment
           path: './dc'
-      - name: Boot Application
+      - name: Boot WordPress Application
         env:
           WP_CORE: '5.0'
           PHP: ${{ matrix.php }}
         run: |
           cd dc
-          docker compose up --detach
+          docker compose up --detach --wait
+
+      - name: Cypress
+        env:
+          CYPRESS_WP_CORE: '5.0'
+        run: yarn cypress run
