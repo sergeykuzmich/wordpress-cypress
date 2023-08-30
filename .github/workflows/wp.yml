@@ -1,0 +1,62 @@
+name: WordPress
+on:
+  workflow_dispatch:
+    inputs:
+      is_ref:
+        description: 'Inline Spoilers - GitHub Branch'
+        default: 'master'
+        type: string
+
+jobs:
+  tests:
+    name: EUT
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
+        wp_core: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7', '5.8', '5.9', '6.0', '6.1', '6.2', '6.3']
+    fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.3.0'
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - uses: actions/checkout@v3
+        with:
+          repository: sergeykuzmich/inline-spoilers
+          ref: ${{ inputs.is_ref }}
+          path: './inline-spoilers'
+      
+      - uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.WP_DEVELOPMENT_ENV_KEY }}
+          repository: sergeykuzmich/wp-development-environment
+          path: './dc'
+      - name: Boot WordPress Application
+        env:
+          WP_CORE: ${{ matrix.wp_core }}
+          PHP: ${{ matrix.php }}
+        run: |
+          cd dc
+          docker compose up --detach --wait
+
+      - name: Cypress
+        env:
+          CYPRESS_WP_CORE: ${{ matrix.wp_core }}
+        run: yarn cypress run
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: ${{ matrix.wp_core }}-${{ matrix.php }}-screenshots
+          path: cypress/screenshots
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: ${{ matrix.wp_core }}-${{ matrix.php }}-videos
+          path: cypress/videos
