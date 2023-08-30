@@ -21,17 +21,14 @@ jobs:
           - { wp_core: '5.0', php: '7.2'}
           - { wp_core: '5.0', php: '7.3'}
 
-          - { wp_core: '5.1', php: '7.0'}
           - { wp_core: '5.1', php: '7.1'}
           - { wp_core: '5.1', php: '7.2'}
           - { wp_core: '5.1', php: '7.3'}
 
-          - { wp_core: '5.2', php: '7.0'}
           - { wp_core: '5.2', php: '7.1'}
           - { wp_core: '5.2', php: '7.2'}
           - { wp_core: '5.2', php: '7.3'}
 
-          - { wp_core: '5.3', php: '7.0'}
           - { wp_core: '5.3', php: '7.1'}
           - { wp_core: '5.3', php: '7.2'}
           - { wp_core: '5.3', php: '7.3'}
