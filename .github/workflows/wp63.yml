@@ -1,4 +1,4 @@
-name: WordPress 8.0
+name: WordPress 6.3
 on:
   workflow_dispatch:
 
