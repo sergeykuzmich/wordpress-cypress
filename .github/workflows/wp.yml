@@ -103,6 +103,11 @@ jobs:
           ssh-key: ${{ secrets.WP_DEVELOPMENT_ENV_KEY }}
           repository: sergeykuzmich/wp-development-environment
           path: './dc'
+      - name: Cache Images
+        uses: actions/cache@v3
+        with:
+          path: /var/lib/docker
+          key: wordpress-${{ matrix.wp_core }}-${{ matrix.php }}
       - name: Boot WordPress Application
         env:
           WP_CORE: ${{ matrix.wp_core }}
