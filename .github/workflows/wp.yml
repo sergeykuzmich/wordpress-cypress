@@ -97,14 +97,14 @@ jobs:
           repository: sergeykuzmich/inline-spoilers
           ref: ${{ inputs.is_ref }}
           path: './inline-spoilers'
+      - name: Clean-Up Plugin Directory
+        run: rm -rf ./inline-spoilers/.git
       
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.WP_DEVELOPMENT_ENV_KEY }}
           repository: sergeykuzmich/wp-development-environment
           path: './dc'
-      - name: Cleanup Development Environment
-        run: rm -rf ./dc/.git
       - name: Boot WordPress Application
         env:
           WP_CORE: ${{ matrix.wp_core }}
