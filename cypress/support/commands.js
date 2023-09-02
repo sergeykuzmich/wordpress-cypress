@@ -50,9 +50,15 @@ Cypress.Commands.add('supress_guttenberg_wizzard', () => {
     return false
   });
 
-  // 5.0 ... 5.1
+  // 5.0 ... 5.3
   cy.get('body').then((body) => {
     let popover = body.find('[class*=nux-dot-tip]');
     popover.length && cy.get('[class*=nux-dot-tip__disable]').click()
+  })
+
+  // 5.4 ... 
+  cy.get('body').then((body) => {
+    let popover = body.find('[class*=edit-post-welcome-guide]');
+    popover.length && cy.get('[class*=edit-post-welcome-guide] [aria-label="Close dialog"]').click()
   })
 })
