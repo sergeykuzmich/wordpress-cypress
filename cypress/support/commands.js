@@ -41,3 +41,18 @@ Cypress.Commands.add('logout', () => {
   cy.get('[id=wp-admin-bar-logout] a').click()
   cy.get('[name=loginform]').should('exist')
 })
+
+Cypress.Commands.add('supress_guttenberg_wizzard', () => {
+
+  // WordPress 5.2 throws exception `Failed to execute 'send' on 'XMLHttpRequest'`
+  // when you're leaving `Add New` page with unsaved changes prompt
+  Cypress.env('WP_CORE') == '5.2' && Cypress.on('uncaught:exception', (popup) => {
+    return false
+  });
+
+  // 5.0 ... 5.1
+  cy.get('body').then((body) => {
+    let popover = body.find('[class*=nux-dot-tip]');
+    popover.length && cy.get('[class*=nux-dot-tip__disable]').click()
+  })
+})
