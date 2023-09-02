@@ -50,6 +50,8 @@ Cypress.Commands.add('supress_guttenberg_wizzard', () => {
     return false
   });
 
+  cy.wait(1000)
+
   // 5.0 ... 5.3
   cy.get('body').then((body) => {
     let popover = body.find('[class*=nux-dot-tip]');
@@ -59,6 +61,6 @@ Cypress.Commands.add('supress_guttenberg_wizzard', () => {
   // 5.4 ... 
   cy.get('body').then((body) => {
     let popover = body.find('[class*=edit-post-welcome-guide]');
-    popover.length && cy.get('[class*=edit-post-welcome-guide] [aria-label="Close dialog"]').click()
+    popover.length && cy.get('[class*=edit-post-welcome-guide] [class*=components-modal__header] [class*=components-button]').click()
   })
 })
