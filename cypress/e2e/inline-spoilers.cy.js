@@ -38,7 +38,7 @@ describe('Inline Spoilers', () => {
       .click()
 
     // Preview the post
-    cy.get('[class*=editor-post-publish-panel] [class*=postpublish-buttons] [class*=is-primary]')
+    cy.contains('View Post')
       .click()
 
     // Check spoiler behaviour
@@ -93,7 +93,7 @@ describe('Inline Spoilers', () => {
       .click()
 
     // Preview the post
-    cy.get('[class*=editor-post-publish-panel] [class*=postpublish-buttons] [class*=is-primary]')
+    cy.contains('View Post')
       .click()
 
     // Check spoilers behaviour
