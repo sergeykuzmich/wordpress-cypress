@@ -22,12 +22,12 @@ describe('Inline Spoilers', () => {
     cy.open_new_post_page()
 
     // Create post with spoiler
-    cy.get('[class*=post-title-wrapper]').type('Spoiled Content') 
+    cy.get('[class*=editor-post-title__input]').type('Spoiled Content') 
     cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
       .click()
     cy.get('[class*=editor-inserter__menu] input[type=search]').type('inline')
     cy.get('[class*=editor-block-list-item-inline-spoilers-block').click()  
-    cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
+    Cypress.env('WP_CORE') > 5.4 && cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
       .click()
     cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-title]')
       .type('The title')
@@ -63,12 +63,12 @@ describe('Inline Spoilers', () => {
     cy.open_new_post_page()
 
     // Create post with spoiler
-    cy.get('[class*=post-title-wrapper]').type('Multiple Spoilers') 
+    cy.get('[class*=editor-post-title__input]').type('Multiple Spoilers') 
     cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
       .click()
     cy.get('[class*=editor-inserter__menu] input[type=search]').type('inline')
     cy.get('[class*=editor-block-list-item-inline-spoilers-block').click()  
-    cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
+    Cypress.env('WP_CORE') > 5.4 && cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
       .click()
     cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-title]')
       .type(spoilers[0].title)
@@ -79,7 +79,7 @@ describe('Inline Spoilers', () => {
       .click()
     cy.get('[class*=editor-inserter__menu] input[type=search]').type('inline')
     cy.get('[class*=editor-block-list-item-inline-spoilers-block').click()  
-    cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
+    Cypress.env('WP_CORE') > 5.4 && cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
       .click()
     cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-title]')
       .last()
