@@ -61,12 +61,12 @@ Cypress.Commands.add('supress_guttenberg_wizzard', () => {
 
   // WordPress 5.2 throws exception `Failed to execute 'send' on 'XMLHttpRequest'`
   // when you're leaving `Add New` page with unsaved changes prompt
-  Cypress.env('WP_CORE') == '5.2' && Cypress.on('uncaught:exception', (popup) => {
+  Cypress.env('WP_CORE') == 5.2 && Cypress.on('uncaught:exception', (popup) => {
     return false
   })
 
   // Wait wizzard popup animation
-  cy.wait(1500)
+  Cypress.env('WP_CORE') >= 5.4 && cy.wait(1500)
 
   // 5.0 ... 5.3
   cy.get('body').then((body) => {
