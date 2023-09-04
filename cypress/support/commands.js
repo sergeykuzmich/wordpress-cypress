@@ -42,15 +42,31 @@ Cypress.Commands.add('logout', () => {
   cy.get('[name=loginform]').should('exist')
 })
 
+Cypress.Commands.add('logout', () => {
+  cy.visit('/wp-admin')
+  cy.contains('Howdy, wordpress')
+  cy.get('[class="menupop with-avatar"] [class="ab-sub-wrapper"]').invoke('show')
+  cy.get('[id=wp-admin-bar-logout] a').click()
+  cy.get('[name=loginform]').should('exist')
+})
+
+Cypress.Commands.add('open_new_post_page', () => {
+  cy.get('li[id=menu-posts]').click()
+  cy.get('a[class=page-title-action]').contains('Add New').click()
+
+  cy.supress_guttenberg_wizzard()
+})
+
 Cypress.Commands.add('supress_guttenberg_wizzard', () => {
 
   // WordPress 5.2 throws exception `Failed to execute 'send' on 'XMLHttpRequest'`
   // when you're leaving `Add New` page with unsaved changes prompt
   Cypress.env('WP_CORE') == '5.2' && Cypress.on('uncaught:exception', (popup) => {
     return false
-  });
+  })
 
-  cy.wait(1500)
+  // Wait wizzard popup animation
+  Cypress.env('WP_CORE') == '5.4' && cy.wait(1500)
 
   // 5.0 ... 5.3
   cy.get('body').then((body) => {

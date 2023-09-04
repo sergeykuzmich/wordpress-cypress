@@ -9,15 +9,108 @@ describe('Inline Spoilers', () => {
   })
 
   it('guttenberg block is initialized', () => {
-    cy.get('li[id=menu-posts]').click()
-    cy.get('a[class=page-title-action]').contains('Add New').click()
-
-    cy.supress_guttenberg_wizzard()
+    cy.open_new_post_page()
 
     cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
       .click()
     cy.get('[class*=editor-inserter__menu] input[type=search]').type('inline')
-    cy.get('[class*=editor-block-list-item-inline-spoilers-block').should('be.visible')    
+    cy.get('[class*=editor-block-list-item-inline-spoilers-block')
+      .should('be.visible')    
+  })
+
+  it('can be added with guttenberg', () => {
+    cy.open_new_post_page()
+
+    // Create post with spoiler
+    cy.get('[class*=post-title-wrapper]').type('Spoiled Content') 
+    cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
+      .click()
+    cy.get('[class*=editor-inserter__menu] input[type=search]').type('inline')
+    cy.get('[class*=editor-block-list-item-inline-spoilers-block').click() 
+    cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-title]')
+      .type('The title')
+    cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-content] [role=textbox]')
+      .type('Lorem ipsum dolor sit amet.')
+    cy.get('[class*=edit-post-header] [class*=editor-post-publish]').click()
+    cy.get('[class*=editor-post-publish-panel] [class*=editor-post-publish-button]')
+      .click()
+
+    // Preview the post
+    cy.get('[class*=editor-post-publish-panel] [class*=postpublish-buttons] [class*=is-primary]')
+      .click()
+
+    // Check spoiler behaviour
+    cy.contains('Lorem ipsum dolor sit amet.').should('be.not.visible')
+    cy.contains('The title').click()
+    cy.wait(300)
+    cy.contains('Lorem ipsum dolor sit amet.').should('be.visible')
+    cy.contains('The title').click()
+    cy.wait(300)
+    cy.contains('Lorem ipsum dolor sit amet.').should('be.not.visible')
+  })
+
+  it('can be added multiple times', () => {
+    const spoilers = [{ 
+      title: 'The first one', 
+      content: 'Etiam augue urna, ullamcorper dapibus ex quis, elementum tristique libero.'
+    },{ 
+      title: 'The second spoilier', 
+      content: 'Phasellus nec turpis semper, fermentum magna ut, lobortis lacus.'
+    }]
+
+    cy.open_new_post_page()
+
+    // Create post with spoiler
+    cy.get('[class*=post-title-wrapper]').type('Multiple Spoilers') 
+    cy.get('div[class=edit-post-header] button[class*=inserter][class*=toggle]')
+      .click()
+    cy.get('[class*=editor-inserter__menu] input[type=search]').type('inline')
+    cy.get('[class*=editor-block-list-item-inline-spoilers-block').click()  
+    cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-title]')
+      .type(spoilers[0].title)
+    cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-content] [role=textbox]')
+      .type(spoilers[0].content)
+
+    cy.get('[class*=editor-block-list-item-inline-spoilers-block').click()
+    cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-title]')
+      .last()
+      .type(spoilers[1].title)
+    cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-content] [role=textbox]')
+      .last()
+      .type(spoilers[1].content)
+
+    cy.get('[class*=edit-post-header] [class*=editor-post-publish]').click()
+    cy.get('[class*=editor-post-publish-panel] [class*=editor-post-publish-button]')
+      .click()
+
+    // Preview the post
+    cy.get('[class*=editor-post-publish-panel] [class*=postpublish-buttons] [class*=is-primary]')
+      .click()
+
+    // Check spoilers behaviour
+    cy.contains(spoilers[0].content).should('be.not.visible')
+    cy.contains(spoilers[1].content).should('be.not.visible')
+
+    cy.contains(spoilers[0].title).click()
+    cy.wait(300)
+    cy.contains(spoilers[0].content).should('be.visible')
+    cy.contains(spoilers[1].content).should('be.not.visible')
+
+    cy.contains(spoilers[0].title).click()
+    cy.wait(300)
+    cy.contains(spoilers[0].content).should('be.not.visible')
+    cy.contains(spoilers[1].content).should('be.not.visible')
+
+    cy.contains(spoilers[0].title).click()
+    cy.contains(spoilers[1].title).click()
+    cy.wait(300)
+    cy.contains(spoilers[0].content).should('be.visible')
+    cy.contains(spoilers[1].content).should('be.visible')
+
+    cy.contains(spoilers[0].title).click()
+    cy.wait(300)
+    cy.contains(spoilers[0].content).should('be.not.visible')
+    cy.contains(spoilers[1].content).should('be.visible')
   })
 
   it('plugin can be deactivated', () => {
