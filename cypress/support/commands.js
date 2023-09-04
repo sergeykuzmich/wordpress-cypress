@@ -66,7 +66,7 @@ Cypress.Commands.add('supress_guttenberg_wizzard', () => {
   })
 
   // Wait wizzard popup animation
-  Cypress.env('WP_CORE') == '5.4' && cy.wait(1500)
+  cy.wait(1500)
 
   // 5.0 ... 5.3
   cy.get('body').then((body) => {
