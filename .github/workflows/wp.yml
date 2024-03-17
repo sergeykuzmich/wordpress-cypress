@@ -111,12 +111,12 @@ jobs:
           CYPRESS_WP_CORE: ${{ matrix.wp_core }}
         run: yarn cypress run
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: ${{ matrix.wp_core }}-${{ matrix.php }}-s
           path: cypress/screenshots
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: ${{ matrix.wp_core }}-${{ matrix.php }}-v
