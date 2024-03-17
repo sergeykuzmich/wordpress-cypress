@@ -76,35 +76,34 @@ jobs:
           - { wp_core: '6.4', php: '8.0'}
           - { wp_core: '6.4', php: '8.1'}
           - { wp_core: '6.4', php: '8.2'}
+          - { wp_core: '6.4', php: '8.4'}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20.3.0'
+          node-version: '20.11.1'
           cache: 'yarn'
           cache-dependency-path: 'yarn.lock'
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: sergeykuzmich/inline-spoilers
           ref: ${{ inputs.is_ref }}
           path: './inline-spoilers'
-      - name: Clean-Up Plugin Directory
-        run: rm -rf ./inline-spoilers/.git
       
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.WP_DEVELOPMENT_ENV_KEY }}
           repository: sergeykuzmich/wp-development-environment
-          path: './dc'
+          path: './wp-development-environment'
       - name: Boot WordPress Application
         env:
           WP_CORE: ${{ matrix.wp_core }}
           PHP: ${{ matrix.php }}
         run: |
-          cd dc
+          cd wp-development-environment
           docker compose up --detach --wait
 
       - name: Execute Cypress
