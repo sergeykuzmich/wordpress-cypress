@@ -77,6 +77,10 @@ jobs:
           - { wp_core: '6.4', php: '8.1'}
           - { wp_core: '6.4', php: '8.2'}
           - { wp_core: '6.4', php: '8.3'}
+
+          - { wp_core: '6.5', php: '8.1'}
+          - { wp_core: '6.5', php: '8.2'}
+          - { wp_core: '6.5', php: '8.3'}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
