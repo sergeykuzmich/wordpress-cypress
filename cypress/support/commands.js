@@ -24,14 +24,16 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('login', () => {
-  cy.visit('/wp-admin')
-  cy.wait(500)
-  cy.get('[name=loginform]').should('exist')
-  cy.get('input[name=log]').type('wordpress')
-  cy.get('input[name=pwd]').type('wpassword')
-  cy.get('input[name=wp-submit]').click()
-  cy.contains('Howdy, wordpress')
+Cypress.Commands.add('login', (username='wordpress', password='wpassword') => {
+  cy.session([username, password], () => {
+    cy.visit('/wp-admin')
+    cy.wait(500)
+    cy.get('[name=loginform]').should('exist')
+    cy.get('input[name=log]').type(username)
+    cy.get('input[name=pwd]').type(password)
+    cy.get('input[name=wp-submit]').click()
+    cy.contains('Howdy, wordpress')
+  });
 })
 
 Cypress.Commands.add('logout', () => {
