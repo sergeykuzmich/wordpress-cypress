@@ -1,5 +1,5 @@
 describe('WordPress', () => {
-  it('installed', () => {
+  it('is installed', () => {
     cy.visit('/')
     cy.contains('WordPress')
   })
