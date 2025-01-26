@@ -34,6 +34,7 @@ Cypress.Commands.add('login', (username='wordpress', password='wpassword') => {
     cy.get('input[name=wp-submit]').click()
     cy.contains('Howdy, wordpress')
   });
+  cy.visit('/wp-admin')
 })
 
 Cypress.Commands.add('logout', () => {
