@@ -80,6 +80,14 @@ jobs:
           - { wp_core: '6.5', php: '8.1'}
           - { wp_core: '6.5', php: '8.2'}
           - { wp_core: '6.5', php: '8.3'}
+
+          - { wp_core: '6.6', php: '8.1'}
+          - { wp_core: '6.6', php: '8.2'}
+          - { wp_core: '6.6', php: '8.3'}
+
+          - { wp_core: '6.7', php: '8.1'}
+          - { wp_core: '6.7', php: '8.2'}
+          - { wp_core: '6.7', php: '8.3'}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -101,6 +109,7 @@ jobs:
           ssh-key: ${{ secrets.WP_DEVELOPMENT_ENV_KEY }}
           repository: sergeykuzmich/wp-development-environment
           path: './wp-development-environment'
+          ref: '584a5df78776c2f94f55082069c289cc2b3569e5'
       - name: Boot WordPress Application
         env:
           WP_CORE: ${{ matrix.wp_core }}
