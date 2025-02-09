@@ -47,16 +47,4 @@ Cypress.Commands.add('logout', () => {
 Cypress.Commands.add('open_new_post_page', () => {
   cy.get('li[id=menu-posts]').click()
   cy.get('a[class=page-title-action]').contains('Add New').click()
-
-  cy.supress_guttenberg_wizzard()
-})
-
-Cypress.Commands.add('supress_guttenberg_wizzard', () => {
-  // Wait wizzard popup animation
-  Cypress.env('WP_CORE') >= 5.4 && cy.wait(1500)
-  
-  cy.get('body').then((body) => {
-    let popover = body.find('[class*=edit-post-welcome-guide]');
-    popover.length && cy.get('[class*=edit-post-welcome-guide] [class*=components-modal__header] [class*=components-button]').click()
-  })
 })
