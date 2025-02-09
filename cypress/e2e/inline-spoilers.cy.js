@@ -44,10 +44,8 @@ describe('Inline Spoilers', () => {
     // Check spoiler behaviour
     cy.contains('Lorem ipsum dolor sit amet.').should('be.not.visible')
     cy.contains('The title').click()
-    cy.wait(300)
     cy.contains('Lorem ipsum dolor sit amet.').should('be.visible')
     cy.contains('The title').click()
-    cy.wait(300)
     cy.contains('Lorem ipsum dolor sit amet.').should('be.not.visible')
   })
 
@@ -101,23 +99,19 @@ describe('Inline Spoilers', () => {
     cy.contains(spoilers[1].content).should('be.not.visible')
 
     cy.contains(spoilers[0].title).click()
-    cy.wait(300)
     cy.contains(spoilers[0].content).should('be.visible')
     cy.contains(spoilers[1].content).should('be.not.visible')
 
     cy.contains(spoilers[0].title).click()
-    cy.wait(300)
     cy.contains(spoilers[0].content).should('be.not.visible')
     cy.contains(spoilers[1].content).should('be.not.visible')
 
     cy.contains(spoilers[0].title).click()
     cy.contains(spoilers[1].title).click()
-    cy.wait(300)
     cy.contains(spoilers[0].content).should('be.visible')
     cy.contains(spoilers[1].content).should('be.visible')
 
     cy.contains(spoilers[0].title).click()
-    cy.wait(300)
     cy.contains(spoilers[0].content).should('be.not.visible')
     cy.contains(spoilers[1].content).should('be.visible')
   })
