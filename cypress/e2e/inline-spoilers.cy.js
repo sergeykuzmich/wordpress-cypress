@@ -19,6 +19,11 @@ describe('Inline Spoilers', () => {
   })
 
   it('can be added with guttenberg', () => {
+    const spoiler = { 
+      title: 'The orpan', 
+      content: 'Phasellus tempor tellus quis felis dignissim, a elementum purus malesuada.'
+    }
+
     cy.open_new_post_page()
 
     // Create post with spoiler
@@ -26,13 +31,13 @@ describe('Inline Spoilers', () => {
     cy.get('div[class*=edit-post-header] button[class*=inserter][class*=toggle]')
       .click()
     cy.get('[class*=editor-inserter__menu] input[type=search]').type('inline')
-    cy.get('[class*=editor-block-list-item-inline-spoilers-block').click()  
-    Cypress.env('WP_CORE') > 5.4 && cy.get('div[class*=edit-post-header] button[class*=inserter][class*=toggle]')
+    cy.get('[class*=editor-block-list-item-inline-spoilers-block]').click()  
+    cy.get('div[class*=edit-post-header] button[class*=inserter][class*=toggle]')
       .click()
     cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-title]')
-      .type('The title')
+      .type(spoiler.title)
     cy.get('[class=wp-block-inline-spoilers-block] [class=spoiler-content] [role=textbox]')
-      .type('Lorem ipsum dolor sit amet.')
+      .type(spoiler.content)
     cy.get('[class*=edit-post-header] [class*=editor-post-publish]').click()
     cy.get('[class*=editor-post-publish-panel] [class*=editor-post-publish-button]')
       .click()
@@ -42,11 +47,11 @@ describe('Inline Spoilers', () => {
       .click()
 
     // Check spoiler behaviour
-    cy.contains('Lorem ipsum dolor sit amet.').should('be.not.visible')
-    cy.contains('The title').click()
-    cy.contains('Lorem ipsum dolor sit amet.').should('be.visible')
-    cy.contains('The title').click()
-    cy.contains('Lorem ipsum dolor sit amet.').should('be.not.visible')
+    cy.contains(spoiler.content).should('be.not.visible')
+    cy.contains(spoiler.title).click()
+    cy.contains(spoiler.content).should('be.visible')
+    cy.contains(spoiler.title).click()
+    cy.contains(spoiler.content).should('be.not.visible')
   })
 
   it('can be added multiple times', () => {
