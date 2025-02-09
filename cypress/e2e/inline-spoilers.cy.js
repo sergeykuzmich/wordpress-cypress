@@ -8,6 +8,86 @@ describe('Inline Spoilers', () => {
     cy.get('a[href*="action=activate&plugin=inline-spoilers"]').click()
   })
 
+  /* == Backward Compatibility Checks == */
+
+  it('plugin is compatible with shortcode of version 1.5.5', () => {
+    const spoiler = { 
+      title: 'Who Survives in the Final Episode?', 
+      content: 'Against all odds, the main character fakes their death and escapes to another country.'
+    }
+
+    // Open the post
+    cy.visit('/')
+    cy.contains('Shortcode Spoiler ver. 1.5.5').click()
+
+    // Check spoiler behaviour
+    cy.get('details.wp-shortcode-inline-spoilers-shortcode')
+      .as('spoiler');
+
+    // Since browser is responsible to control details element
+    // it is enough to check only attribute, not the spoiler content
+    cy.get('@spoiler').should('not.have.attr', 'open')
+    cy.contains(spoiler.title).click()
+    cy.get('@spoiler').should('have.attr', 'open')
+    cy.contains(spoiler.title).click()
+    cy.get('@spoiler').should('not.have.attr', 'open')
+  })
+
+  it('plugin is compatible with Guttenberg block of version 1.5.5', () => {
+    const spoiler = { 
+      title: 'The Secret Ingredient in Grandma’s Cookies', 
+      content: 'It’s actually a pinch of cinnamon! That’s what makes them so special.'
+    }
+
+    // Open the post
+    cy.visit('/')
+    cy.contains('Spoiled Content ver. 1.5.5').click()
+
+    // Check spoiler behaviour
+    cy.contains(spoiler.content).should('be.not.visible')
+    cy.contains(spoiler.title).click()
+    cy.contains(spoiler.content).should('be.visible')
+    cy.contains(spoiler.title).click()
+    cy.contains(spoiler.content).should('be.not.visible')
+  })
+
+  it('plugin is compatible with multiple Guttenberg blocks of version 1.5.5 on one page', () => {
+    const spoilers = [{ 
+      title: 'Hidden Feature in Our New App Update', 
+      content: 'You can now double-tap the logo in the settings to unlock a dark mode easter egg!'
+    },{ 
+      title: 'Unexpected Plot Twist in the Latest Mystery Novel', 
+      content: 'The detective was the real culprit all along, covering up their own crimes!'
+    }]
+
+    // Open the post
+    cy.visit('/')
+    cy.contains('Multiple Spoilers ver 1.5.5').click()
+
+    // Check spoilers behaviour
+    cy.contains(spoilers[0].content).should('be.not.visible')
+    cy.contains(spoilers[1].content).should('be.not.visible')
+
+    cy.contains(spoilers[0].title).click()
+    cy.contains(spoilers[0].content).should('be.visible')
+    cy.contains(spoilers[1].content).should('be.not.visible')
+
+    cy.contains(spoilers[0].title).click()
+    cy.contains(spoilers[0].content).should('be.not.visible')
+    cy.contains(spoilers[1].content).should('be.not.visible')
+
+    cy.contains(spoilers[0].title).click()
+    cy.contains(spoilers[1].title).click()
+    cy.contains(spoilers[0].content).should('be.visible')
+    cy.contains(spoilers[1].content).should('be.visible')
+
+    cy.contains(spoilers[0].title).click()
+    cy.contains(spoilers[0].content).should('be.not.visible')
+    cy.contains(spoilers[1].content).should('be.visible')
+  })
+
+  /* == New Implementation Checks == */
+
   it('guttenberg block is initialized', () => {
     cy.open_new_post_page()
 
@@ -20,7 +100,7 @@ describe('Inline Spoilers', () => {
 
   it('can be added with shortcode', () => {
     const spoiler = { 
-      title: 'Who Survives in the Final Episode? 🎬', 
+      title: 'Who Survives in the Final Episode?', 
       content: 'Against all odds, the main character fakes their death and escapes to another country.'
     }
 
@@ -40,16 +120,21 @@ describe('Inline Spoilers', () => {
     cy.contains('View Post').click()
 
     // Check spoiler behaviour
-    cy.contains(spoiler.content).should('be.not.visible')
+    cy.get('details.wp-shortcode-inline-spoilers-shortcode')
+      .as('spoiler');
+
+    // Since browser is responsible to control details element
+    // it is enough to check only attribute, not the spoiler content
+    cy.get('@spoiler').should('not.have.attr', 'open')
     cy.contains(spoiler.title).click()
-    cy.contains(spoiler.content).should('be.visible')
+    cy.get('@spoiler').should('have.attr', 'open')
     cy.contains(spoiler.title).click()
-    cy.contains(spoiler.content).should('be.not.visible')
+    cy.get('@spoiler').should('not.have.attr', 'open')
   })
 
   it('can be added with Guttenberg', () => {
     const spoiler = { 
-      title: 'The Secret Ingredient in Grandma’s Cookies 🍪', 
+      title: 'The Secret Ingredient in Grandma’s Cookies', 
       content: 'It’s actually a pinch of cinnamon! That’s what makes them so special.'
     }
 
@@ -75,19 +160,24 @@ describe('Inline Spoilers', () => {
     cy.contains('View Post').click()
 
     // Check spoiler behaviour
-    cy.contains(spoiler.content).should('be.not.visible')
+    cy.get('details.wp-shortcode-inline-spoilers-shortcode')
+      .as('spoiler');
+
+    // Since browser is responsible to control details element
+    // it is enough to check only attribute, not the spoiler content
+    cy.get('@spoiler').should('not.have.attr', 'open')
     cy.contains(spoiler.title).click()
-    cy.contains(spoiler.content).should('be.visible')
+    cy.get('@spoiler').should('have.attr', 'open')
     cy.contains(spoiler.title).click()
-    cy.contains(spoiler.content).should('be.not.visible')
+    cy.get('@spoiler').should('not.have.attr', 'open')
   })
 
   it('can be added multiple times', () => {
     const spoilers = [{ 
-      title: 'Hidden Feature in Our New App Update 📱', 
+      title: 'Hidden Feature in Our New App Update', 
       content: 'You can now double-tap the logo in the settings to unlock a dark mode easter egg!'
     },{ 
-      title: 'Unexpected Plot Twist in the Latest Mystery Novel 📖', 
+      title: 'Unexpected Plot Twist in the Latest Mystery Novel', 
       content: 'The detective was the real culprit all along, covering up their own crimes!'
     }]
 
@@ -116,25 +206,34 @@ describe('Inline Spoilers', () => {
     cy.contains('View Post').click()
 
     // Check spoilers behaviour
-    cy.contains(spoilers[0].content).should('be.not.visible')
-    cy.contains(spoilers[1].content).should('be.not.visible')
+    cy.get('details.wp-shortcode-inline-spoilers-shortcode')
+      .contains(spoilers[0].title)
+      .as('spoilerA');
+    cy.get('details.wp-shortcode-inline-spoilers-shortcode')
+      .contains(spoilers[1].title)
+      .as('spoilerB');
+
+    // Since browser is responsible to control details element
+    // it is enough to check only attribute, not the spoiler content
+    cy.get('@spoilerA').should('not.have.attr', 'open')
+    cy.get('@spoilerB').should('not.have.attr', 'open')
 
     cy.contains(spoilers[0].title).click()
-    cy.contains(spoilers[0].content).should('be.visible')
-    cy.contains(spoilers[1].content).should('be.not.visible')
+    cy.get('@spoilerA').should('have.attr', 'open')
+    cy.get('@spoilerB').should('not.have.attr', 'open')
 
     cy.contains(spoilers[0].title).click()
-    cy.contains(spoilers[0].content).should('be.not.visible')
-    cy.contains(spoilers[1].content).should('be.not.visible')
+    cy.get('@spoilerA').should('not.have.attr', 'open')
+    cy.get('@spoilerB').should('not.have.attr', 'open')
 
     cy.contains(spoilers[0].title).click()
     cy.contains(spoilers[1].title).click()
-    cy.contains(spoilers[0].content).should('be.visible')
-    cy.contains(spoilers[1].content).should('be.visible')
+    cy.get('@spoilerA').should('have.attr', 'open')
+    cy.get('@spoilerB').should('have.attr', 'open')
 
     cy.contains(spoilers[0].title).click()
-    cy.contains(spoilers[0].content).should('be.not.visible')
-    cy.contains(spoilers[1].content).should('be.visible')
+    cy.get('@spoilerA').should('not.have.attr', 'open')
+    cy.get('@spoilerB').should('have.attr', 'open')
   })
 
   it('plugin can be deactivated', () => {
