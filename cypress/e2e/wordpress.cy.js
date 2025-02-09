@@ -11,5 +11,6 @@ describe('WordPress', () => {
 
   it('credentials are valid', () => {
     cy.login()
+    cy.contains('Howdy, wordpress')
   })
 })
