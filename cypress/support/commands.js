@@ -32,17 +32,8 @@ Cypress.Commands.add('login', (username='wordpress', password='wpassword') => {
     cy.get('input[name=log]').type(username)
     cy.get('input[name=pwd]').type(password)
     cy.get('input[name=wp-submit]').click()
-    cy.contains('Howdy, wordpress')
   });
   cy.visit('/wp-admin')
-})
-
-Cypress.Commands.add('logout', () => {
-  cy.visit('/wp-admin')
-  cy.contains('Howdy, wordpress')
-  cy.get('[class="menupop with-avatar"] [class="ab-sub-wrapper"]').invoke('show')
-  cy.get('[id=wp-admin-bar-logout] a').click()
-  cy.get('[name=loginform]').should('exist')
 })
 
 Cypress.Commands.add('logout', () => {
@@ -61,23 +52,9 @@ Cypress.Commands.add('open_new_post_page', () => {
 })
 
 Cypress.Commands.add('supress_guttenberg_wizzard', () => {
-
-  // WordPress 5.2 throws exception `Failed to execute 'send' on 'XMLHttpRequest'`
-  // when you're leaving `Add New` page with unsaved changes prompt
-  Cypress.env('WP_CORE') == 5.2 && Cypress.on('uncaught:exception', (popup) => {
-    return false
-  })
-
   // Wait wizzard popup animation
   Cypress.env('WP_CORE') >= 5.4 && cy.wait(1500)
-
-  // 5.0 ... 5.3
-  cy.get('body').then((body) => {
-    let popover = body.find('[class*=nux-dot-tip]');
-    popover.length && cy.get('[class*=nux-dot-tip__disable]').click()
-  })
-
-  // 5.4 ... 6.3
+  
   cy.get('body').then((body) => {
     let popover = body.find('[class*=edit-post-welcome-guide]');
     popover.length && cy.get('[class*=edit-post-welcome-guide] [class*=components-modal__header] [class*=components-button]').click()
